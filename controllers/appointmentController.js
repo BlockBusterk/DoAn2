@@ -12,7 +12,8 @@ const getallappointments = async (req, res) => {
 
     const appointments = await Appointment.find(keyword)
       .populate("doctorId")
-      .populate("userId");
+      .populate("userId")
+      .sort({ createdAt: -1 });
     return res.send(appointments);
   } catch (error) {
     res.status(500).send("Unable to get apponintments");
@@ -86,8 +87,38 @@ const completed = async (req, res) => {
   }
 };
 
+const rejected = async (req, res) => {
+  try {
+    const alreadyFound = await Appointment.findOneAndUpdate(
+      { _id: req.body.appointid },
+      { status: "Rejected" }
+    );
+
+    const usernotification = Notification({
+      userId: req.locals,
+      content: `Your appointment with ${req.body.doctorname} has been rejected `,
+    });
+
+    await usernotification.save();
+
+    const user = await User.findById(req.locals);
+
+    const doctornotification = Notification({
+      userId: req.body.doctorId,
+      content: `Sorry! Your appointment with ${user.firstname} ${user.lastname} has been rejected please select another time`,
+    });
+
+    await doctornotification.save();
+
+    return res.status(201).send("Appointment completed");
+  } catch (error) {
+    res.status(500).send("Unable to complete appointment");
+  }
+};
+
 module.exports = {
   getallappointments,
   bookappointment,
   completed,
+  rejected
 };

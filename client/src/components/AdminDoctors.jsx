@@ -6,6 +6,7 @@ import { setLoading } from "../redux/reducers/rootSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Empty from "./Empty";
 import fetchData from "../helper/apiCall";
+import ReactPaginate from 'react-paginate';
 import "../styles/user.css";
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
@@ -14,6 +15,25 @@ const AdminDoctors = () => {
   const [doctors, setDoctors] = useState([]);
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.root);
+
+  const [itemOffset, setItemOffset] = useState(0);
+
+  // Simulate fetching items from another resources.
+  // (This could be items from props; or items loaded in a local state
+  // from an API endpoint with useEffect and useState)
+  const endOffset = itemOffset + 7;
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const currentItems = doctors.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(doctors.length / 7);
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * 7) % doctors.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
 
   const getAllDoctors = async (e) => {
     try {
@@ -80,7 +100,7 @@ const AdminDoctors = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {doctors?.map((ele, i) => {
+                  {currentItems?.map((ele, i) => {
                     return (
                       <tr key={ele?._id}>
                         <td>{i + 1}</td>
@@ -111,6 +131,21 @@ const AdminDoctors = () => {
                       </tr>
                     );
                   })}
+
+                  <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="next >"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={5}
+                    pageCount={pageCount}
+                    previousLabel="< previous"
+                    renderOnZeroPageCount={null}
+                    containerClassName="pagination"
+                    pageLinkClassName="page-num"
+                    previousLinkClassName="page-num"
+                    nextLinkClassName="page-num"
+                    activeClassName="active"
+                  />
                 </tbody>
               </table>
             </div>

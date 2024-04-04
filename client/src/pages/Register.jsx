@@ -12,8 +12,8 @@ function Register() {
   const [formDetails, setFormDetails] = useState({
     firstname: "",
     lastname: "",
-    email: "",
-    password: "",
+    email: "example@gmail.com",
+    password: "12345",
     confpassword: "",
   });
   const navigate = useNavigate();

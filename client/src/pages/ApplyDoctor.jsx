@@ -11,7 +11,7 @@ axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
 const ApplyDoctor = () => {
   const navigate = useNavigate();
   const [formDetails, setFormDetails] = useState({
-    specialization: "",
+    specialization: "General practice",
     experience: "",
     fees: "",
   });
@@ -62,14 +62,28 @@ const ApplyDoctor = () => {
         <div className="register-container flex-center contact">
           <h2 className="form-heading">Apply for Doctor</h2>
           <form className="register-form ">
-            <input
+            {/* <input
               type="text"
               name="specialization"
               className="form-input"
               placeholder="Enter your specialization"
               value={formDetails.specialization}
               onChange={inputChange}
-            />
+            /> */}
+            <select
+                  name="specialization"
+                  value={formDetails.specialization}
+                  className="form-input"
+                  id="specialization"
+                  onChange={inputChange}
+                >
+                  <option value="General practice">General practice</option>
+                  <option value="Internal medicine">Internal medicine</option>
+                  <option value="Gastroenterology">Gastroenterology</option>
+                  <option value="Pulmonology">Pulmonology</option>
+                  <option value="Rheumatology">Rheumatology</option>
+                </select>
+                
             <input
               type="number"
               name="experience"

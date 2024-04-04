@@ -17,5 +17,6 @@ appointRouter.post(
 );
 
 appointRouter.put("/completed", auth, appointmentController.completed);
+appointRouter.put("/rejected", auth, appointmentController.rejected);
 
 module.exports = appointRouter;

@@ -120,9 +120,9 @@ function Profile() {
 
   return (
     <>
-      {loading ? (
+      {loading ? 
         <Loading />
-      ) : (
+       : (
         <section className="register-section flex-center">
           <div className="profile-container flex-center">
             <h2 className="form-heading">Profile</h2>
@@ -161,6 +161,7 @@ function Profile() {
                   placeholder="Enter your email"
                   value={formDetails.email}
                   onChange={inputChange}
+                  readOnly
                 />
                 <select
                   name="gender"
@@ -184,12 +185,14 @@ function Profile() {
                   onChange={inputChange}
                 />
                 <input
-                  type="text"
+                  type="number"
                   name="mobile"
                   className="form-input"
+                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                   placeholder="Enter your mobile number"
                   value={formDetails?.mobile}
                   onChange={inputChange}
+                  
                 />
               </div>
               <textarea

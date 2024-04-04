@@ -7,12 +7,34 @@ import Navbar from "../components/Navbar";
 import fetchData from "../helper/apiCall";
 import { setLoading } from "../redux/reducers/rootSlice";
 import Loading from "../components/Loading";
+import ReactPaginate from 'react-paginate';
+
 import "../styles/user.css";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.root);
+
+
+  const [itemOffset, setItemOffset] = useState(0);
+
+  // Simulate fetching items from another resources.
+  // (This could be items from props; or items loaded in a local state
+  // from an API endpoint with useEffect and useState)
+  const endOffset = itemOffset + 7;
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const currentItems = notifications.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(notifications.length / 7);
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * 7) % notifications.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
 
   
 
@@ -51,7 +73,7 @@ const Notifications = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {notifications?.map((ele, i) => {
+                  {currentItems?.map((ele, i) => {
                     return (
                       <tr key={ele?._id}>
                         <td>{i + 1}</td>
@@ -61,6 +83,21 @@ const Notifications = () => {
                       </tr>
                     );
                   })}
+
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="next >"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={5}
+                    pageCount={pageCount}
+                    previousLabel="< previous"
+                    renderOnZeroPageCount={null}
+                    containerClassName="pagination"
+                    pageLinkClassName="page-num"
+                    previousLinkClassName="page-num"
+                    nextLinkClassName="page-num"
+                    activeClassName="active"
+                  />
                 </tbody>
               </table>
             </div>

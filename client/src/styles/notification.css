@@ -12,3 +12,30 @@
 .disable-btn:hover {
   background-color: rgba(0, 128, 0, 0.528) !important;
 }
+
+.pagination{
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5rem;
+  font-size: 1.2rem;
+  gap: 5px;
+}
+
+.pagination .page-num{
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-weight: 400;
+}
+
+.pagination .page-num:hover{
+  background-color: #5AB1BB;
+  color: #fff;
+}
+
+.pagination .active{
+  background-color: #5AB1BB;
+  
+}
